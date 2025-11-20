@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Fotografías · Miha Donica</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Tipografías -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Spectral:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f5f1e6;
+      --bg-soft: #fdf9f0;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent-1: #c66a2b;
+      --border: #d3c8b3;
+      --shadow-soft: 0 22px 50px rgba(0,0,0,0.12);
+      --header-height: 70px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
+                   "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* GRANO GLOBAL */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.22;
+      mix-blend-mode: soft-light;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+      z-index: -1;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1120px, 92%);
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* HEADER (igual que otras páginas) */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(245,241,230,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: var(--header-height);
+      font-size: 0.95rem;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .brand {
+      font-family: 'Spectral', serif;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.2rem;
+    }
+
+    nav a {
+      position: relative;
+      padding-bottom: 2px;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent-1);
+      transition: width 0.2s ease-out;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .nav-item-dropdown {
+      position: relative;
+    }
+
+    .nav-item-dropdown > button {
+      border: none;
+      background: none;
+      font: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0;
+    }
+
+    .nav-item-dropdown svg {
+      width: 10px;
+      height: 10px;
+      transition: transform 0.2s ease;
+    }
+
+    .nav-item-dropdown.open svg {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 140%;
+      left: 0;
+      background: #fdf9f0;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      min-width: 160px;
+      box-shadow: var(--shadow-soft);
+      padding: 0.4rem 0;
+      display: none;
+      z-index: 30;
+    }
+
+    .nav-item-dropdown.open .dropdown-menu {
+      display: block;
+    }
+
+    .dropdown-menu a {
+      display: block;
+      padding: 0.4rem 0.9rem;
+      font-size: 0.9rem;
+    }
+
+    .dropdown-menu a:hover {
+      background: #f0e4cf;
+    }
+
+    .nav-toggle {
+      display: none;
+      border: none;
+      background: none;
+      cursor: pointer;
+      padding: 0.3rem;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 20px;
+      height: 1.5px;
+      background: var(--text);
+      margin: 4px 0;
+    }
+
+    /* CABECERA PÁGINA */
+    .page-header {
+      padding: 2.6rem 0 1rem;
+    }
+
+    .page-title {
+      font-family: 'Spectral', serif;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 2rem;
+    }
+
+    .page-subtitle {
+      margin-top: 0.3rem;
+      font-size: 0.93rem;
+      color: #4a3f31;
+      max-width: 520px;
+    }
+
+    /* GALERÍA MASONRY */
+    .gallery-wrapper {
+      padding: 1.6rem 0 3.2rem;
+    }
+
+    .photo-grid {
+      column-count: 4;
+      column-gap: 1.2rem;
+    }
+
+    .photo-item {
+      margin-bottom: 1.2rem;
+      break-inside: avoid;
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.08);
+      background: #f9f4ea;
+    }
+
+    .photo-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.25s ease-out, 
+      box-shadow 0.25s ease-out,
+      filter 0.25s ease-out;
+      transform-origin: center center;
+      filter: brightness(1.03) sepia(0.15);
+
+
+    }
+
+    .photo-item:hover img {
+      transform: scale(1.05); /* zoom muy suave */
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      filter: brightness(1.1);
+    }
+
+    /* FOOTER */
+    footer {
+      margin-top: 0.5rem;
+      padding: 1.8rem 0 2.4rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .footer-links a {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 15% 0, rgba(250,244,232,0.9), rgba(10,6,2,0.95));
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 40;
+      padding: 2rem;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox-inner {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 26px 70px rgba(0,0,0,0.6);
+      background: #000;
+    }
+
+    .lightbox-inner img {
+      display: block;
+      max-width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      border: none;
+      border-radius: 999px;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      background: rgba(245,241,230,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      line-height: 1;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    }
+
+    .lightbox-close:hover {
+      background: #f0e4cf;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1200px) {
+      .photo-grid { column-count: 3; }
+    }
+
+    @media (max-width: 900px) {
+      .nav ul {
+        position: absolute;
+        top: var(--header-height);
+        right: 0;
+        left: 0;
+        background: rgba(245,241,230,0.97);
+        border-bottom: 1px solid var(--border);
+        flex-direction: column;
+        padding: 0.7rem 1.5rem 1rem;
+        gap: 0.6rem;
+        display: none;
+      }
+
+      .nav.open ul {
+        display: flex;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .photo-grid { column-count: 2; }
+    }
+
+    @media (max-width: 600px) {
+      .photo-grid { column-count: 1; }
+      .page-header { padding-top: 2rem; }
+      .page-title { font-size: 1.6rem; }
+    }
+  /* Ocultamos el cursor normal del sistema */
+body {
+  cursor: none;a,
+button,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+label,
+.selectable,
+.clickable {
+  cursor: none !important;
+}
+}
+/* -------- CURSOR VINTAGE (con tu imagen) -------- */
+.retro-cursor {
+  position: fixed;
+  width: 40px;   /* ajusta según el tamaño de tu imagen */
+  height: 40px;
+  background-image: url("/ChatGPT\ Image\ 19\ nov\ 2025\,\ 01_24_41.png"); /* 🔁 cambia la ruta si hace falta */
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  image-rendering: pixelated; /* look retro */
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-5px, -2px); 
+  /* pequeño ajuste para que la punta apunte bien */
+}
+/* -------- POP-UP INSTAGRAM CON DESLIZADO -------- */
+.cursor-instagram {
+  position: fixed;
+  font-family: "Inter", sans-serif;
+  font-size: 0.8rem;
+  background: rgba(255,255,245,0.94);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,0.18);
+  color: #1a1a1a;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -20%); /* posición base, un pelín debajo */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 99998;
+}
+
+.cursor-instagram.visible {
+  opacity: 1;
+  transform: translate(-50%, -60%); /* se desplaza hacia arriba suavemente */
+}
+
+    
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="container nav" id="mainNav">
+      <div class="nav-left">
+        <a href="index.html" class="brand">MIHA</a>
+
+        <button class="nav-toggle" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+        </button>
+
+        <nav aria-label="Navegación principal">
+          <ul>
+            <li><a href="sobre-mi.html">Sobre mí</a></li>
+
+            <li class="nav-item-dropdown" id="projectsDropdown">
+              <button type="button" aria-haspopup="true" aria-expanded="false">
+                Proyectos
+                <svg viewBox="0 0 10 6" aria-hidden="true">
+                  <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <div class="dropdown-menu" role="menu">
+                <a href="cinema.html" role="menuitem">Cinema</a>
+                <a href="videoclips.html" role="menuitem">Videoclips</a>
+                <a href="fotografies.html" role="menuitem">Fotografías</a>
+              </div>
+            </li>
+
+            <li><a href="contacto.html">Contacto</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div></div>
+    </div>
+  </header>
+
+  <!-- CABECERA PÁGINA -->
+  <section class="page-header">
+    <div class="container">
+      <h1 class="page-title">Fotografías</h1>
+      <p class="page-subtitle">
+        Selección de imágenes de proyectos, procesos y momentos capturados
+        alrededor del cine, el teatro, la música y lo cotidiano.
+      </p>
+    </div>
+  </section>
+
+  <!-- GALERÍA -->
+  <section class="gallery-wrapper">
+    <div class="container">
+      <div class="photo-grid">
+
+        <!-- 💡 Aquí añades tus fotos.
+             Copia esta línea y cambia la ruta en "src" por la de cada imagen. -->
+
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic.jpg" alt="Fotografía 1">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic2.jpg" alt="Fotografía 2">
+        </div>
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic3.JPG" alt="Fotografía 3">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic4.jpg" alt="Fotografía 4">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic5.jpg" alt="Fotografía 5">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic6.jpg" alt="Fotografía 6">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic7.jpg" alt="Fotografía 7">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic8.jpg" alt="Fotografía 8">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic9.jpg" alt="Fotografía 9">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic10.jpg" alt="Fotografía 10">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic11.jpg" alt="Fotografía 11">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic12.jpg" alt="Fotografía 12">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic13.jpg" alt="Fotografía 13">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic14.jpg" alt="Fotografía 14">
+        </div>
+
+
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic16.jpg" alt="Fotografía 16">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic17.jpg" alt="Fotografía 17">
+        </div>
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic18.jpg" alt="Fotografía 18">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic19.jpg" alt="Fotografía 19">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic20.jpg" alt="Fotografía 20">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic21.jpg" alt="Fotografía 21">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic22.jpg" alt="Fotografía 22">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic23.jpg" alt="Fotografía 23">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic24.jpg" alt="Fotografía 24">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic25.jpg" alt="Fotografía 25">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic26.jpg" alt="Fotografía 26">
+        </div>
+        
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic27.jpg" alt="Fotografía 27">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic28.jpg" alt="Fotografía 28">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic29.jpg" alt="Fotografía 29">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic30.jpg" alt="Fotografía 30">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic31.jpg" alt="Fotografía 31">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic32.jpg" alt="Fotografía 32">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic33.jpg" alt="Fotografía 33">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic34.jpg" alt="Fotografía 34">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic35.jpg" alt="Fotografía 35">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic36.jpg" alt="Fotografía 36">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic37.jpg" alt="Fotografía 37">
+        </div>
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic38.jpg" alt="Fotografía 38">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic39.jpg" alt="Fotografía 39">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic40.JPG" alt="Fotografía 40">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic41.JPG" alt="Fotografía 41">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic42.JPG" alt="Fotografía 42">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic43.JPG" alt="Fotografía 43">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic44.jpg" alt="Fotografía 44">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic45.jpg" alt="Fotografía 45">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic46.jpg" alt="Fotografía 46">
+        </div>
+        
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic47.jpg" alt="Fotografía 47">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic48.jpg" alt="Fotografía 48">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic49.jpg" alt="Fotografía 49">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/este como portada.jpg" alt="Fotografía 50">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic51.jpg" alt="Fotografía 51">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic.52.jpg" alt="Fotografía 52">
+        </div>
+        
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic.53.jpg" alt="Fotografía 53">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic.54.jpg" alt="Fotografía 54">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic.55.jpg" alt="Fotografía 55">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic.56.jpg" alt="Fotografía 56">
+        </div>
+        
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic.57.jpg" alt="Fotografía 57">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic.58.jpg" alt="Fotografía 58">
+        </div>
+
+        <div class="photo-item">
+          <img src="/MATERIAL PORTFOLIOO/fotos varies/mosaic.59.jpg" alt="Fotografía 59">
+        </div>
+
+        <!-- Añade tantas .photo-item como quieras -->
+
+      </div>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-inner">
+      <button class="lightbox-close" type="button" aria-label="Cerrar imagen">×</button>
+      <img src="" alt="Fotografía ampliada" id="lightboxImage">
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> Miha Donica. Todos los derechos reservados.</span>
+      <div class="footer-links">
+        <a href="https://www.instagram.com/mihaelatiganas" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="mailto:mihaela.tiganas.donica@gmail.com">Email</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Año automático
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Menú móvil
+    const nav = document.getElementById('mainNav');
+    const navToggle = nav.querySelector('.nav-toggle');
+    const navList = nav.querySelector('nav ul');
+
+    navToggle.addEventListener('click', () => {
+      nav.classList.toggle('open');
+    });
+
+    navList.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('open');
+      });
+    });
+
+    // Dropdown "Proyectos"
+    const dropdown = document.getElementById('projectsDropdown');
+    const dropdownButton = dropdown.querySelector('button');
+
+    dropdownButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = dropdown.classList.contains('open');
+      if (isOpen) {
+        dropdown.classList.remove('open');
+        dropdownButton.setAttribute('aria-expanded', 'false');
+      } else {
+        dropdown.classList.add('open');
+        dropdownButton.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    document.addEventListener('click', () => {
+      dropdown.classList.remove('open');
+      dropdownButton.setAttribute('aria-expanded', 'false');
+    });
+
+    dropdown.querySelector('.dropdown-menu').addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+
+    // LIGHTBOX: abrir al clicar una foto
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImage');
+    const closeBtn = document.querySelector('.lightbox-close');
+
+    document.querySelectorAll('.photo-item img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightbox.classList.add('open');
+      });
+    });
+
+    // Cerrar lightbox al clicar en la X o fuera de la imagen
+    closeBtn.addEventListener('click', () => {
+      lightbox.classList.remove('open');
+      lightboxImg.src = "";
+    });
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        lightbox.classList.remove('open');
+        lightboxImg.src = "";
+      }
+    });
+
+    // Cerrar con tecla ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox.classList.contains('open')) {
+        lightbox.classList.remove('open');
+        lightboxImg.src = "";
+      }
+    });
+  </script>
+  <div class="retro-cursor"></div>
+<div class="cursor-instagram">@mihaelatiganas</div>
+  <script src="/Cursor.js"></script>
+
+</body>
+</html>
+
+    
