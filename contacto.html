@@ -571,58 +571,54 @@ label,
 
   <!-- Formulario REAL para Netlify -->
   <form
-    id="contactForm"
-    name="contacto"
-    method="POST"
-    data-netlify="true"
-    netlify-honeypot="bot-field"
-    action="/gracias.html"
-  >
+  id="contactForm"
+  action="https://formspree.io/f/TU_ID_AQUI"
+  method="POST"
+>
+  <!-- asunto del email que recibirás -->
+  <input type="hidden" name="_subject" value="Nuevo mensaje desde mihadonica.com">
 
-    <!-- Campo trampa para bots (escondido) -->
-    <p class="hidden-field">
-      <label>No rellenar este campo:
-        <input name="bot-field">
-      </label>
-    </p>
+  <!-- a dónde redirigir después de enviar -->
+  <input type="hidden" name="_redirect" value="https://mihadonica.com/gracias.html">
 
-    <!-- Nombre del formulario para Netlify -->
-    <input type="hidden" name="form-name" value="contacto">
+  <!-- campo anti-spam tipo honeypot (oculto) -->
+  <input type="text" name="_gotcha" style="display:none">
 
-    <div class="field">
-      <label for="nombre">Nombre</label>
-      <input
-        id="nombre"
-        name="nombre"
-        type="text"
-        placeholder="Tu nombre"
-        required
-      >
-    </div>
+  <div class="field">
+    <label for="nombre">Nombre</label>
+    <input
+      id="nombre"
+      name="nombre"
+      type="text"
+      placeholder="Tu nombre"
+      required
+    >
+  </div>
 
-    <div class="field">
-      <label for="email">Email</label>
-      <input
-        id="email"
-        name="email"
-        type="email"
-        placeholder="tu@email.com"
-        required
-      >
-    </div>
+  <div class="field">
+    <label for="email">Email</label>
+    <input
+      id="email"
+      name="email"
+      type="email"
+      placeholder="tu@email.com"
+      required
+    >
+  </div>
 
-    <div class="field">
-      <label for="mensaje">Mensaje</label>
-      <textarea
-        id="mensaje"
-        name="mensaje"
-        placeholder="Cuéntame un poco sobre tu proyecto..."
-        required
-      ></textarea>
-    </div>
+  <div class="field">
+    <label for="mensaje">Mensaje</label>
+    <textarea
+      id="mensaje"
+      name="mensaje"
+      placeholder="Cuéntame un poco sobre tu proyecto..."
+      required
+    ></textarea>
+  </div>
 
-    <button class="btn-primary" type="submit">Enviar</button>
-  </form>
+  <button class="btn-primary" type="submit">Enviar</button>
+</form>
+
 </section>
 
 
