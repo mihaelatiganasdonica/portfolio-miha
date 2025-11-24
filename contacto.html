@@ -500,6 +500,9 @@ label,
   opacity: 1;
   transform: translate(-50%, -60%); /* se desplaza hacia arriba suavemente */
 }
+.hidden-field {
+  display: none;
+}
 
 
   </style>
@@ -564,35 +567,64 @@ label,
       <div class="contact-layout">
         <!-- FORMULARIO -->
         <section class="contact-form-card">
-          <h2>Formulario</h2>
-          <form name="contact" method="POST" data-netlify="true" action="/gracias.html">
-  <input type="hidden" name="form-name" value="contact">
+  <h2>Formulario</h2>
 
-  <div class="field">
-    <label for="nombre">Nombre</label>
-    <input id="nombre" name="nombre" type="text" placeholder="Tu nombre" required>
-  </div>
+  <!-- Formulario REAL para Netlify -->
+  <form
+    id="contactForm"
+    name="contacto"
+    method="POST"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    action="/gracias.html"
+  >
 
-  <div class="field">
-    <label for="email">Email</label>
-    <input id="email" name="email" type="email" placeholder="tu@email.com" required>
-  </div>
+    <!-- Campo trampa para bots (escondido) -->
+    <p class="hidden-field">
+      <label>No rellenar este campo:
+        <input name="bot-field">
+      </label>
+    </p>
 
-  <div class="field">
-    <label for="mensaje">Mensaje</label>
-    <textarea id="mensaje" name="mensaje" placeholder="Cuéntame un poco sobre tu proyecto..." required></textarea>
-  </div>
+    <!-- Nombre del formulario para Netlify -->
+    <input type="hidden" name="form-name" value="contacto">
 
-  <!-- Campo oculto para identificar que viene de la web -->
-  <input type="hidden" name="origen" value="Formulario portfolio Miha Donica">
+    <div class="field">
+      <label for="nombre">Nombre</label>
+      <input
+        id="nombre"
+        name="nombre"
+        type="text"
+        placeholder="Tu nombre"
+        required
+      >
+    </div>
 
-  <button class="btn-primary" type="submit">Enviar</button>
-</form>
+    <div class="field">
+      <label for="email">Email</label>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        placeholder="tu@email.com"
+        required
+      >
+    </div>
 
+    <div class="field">
+      <label for="mensaje">Mensaje</label>
+      <textarea
+        id="mensaje"
+        name="mensaje"
+        placeholder="Cuéntame un poco sobre tu proyecto..."
+        required
+      ></textarea>
+    </div>
 
-          
+    <button class="btn-primary" type="submit">Enviar</button>
+  </form>
+</section>
 
-        </section>
 
         <!-- INFO -->
         <aside class="contact-aside">
@@ -628,60 +660,7 @@ label,
     </div>
   </footer>
 
-  <script>
-    // Año automático
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Menú móvil
-    const nav = document.getElementById('mainNav');
-    const navToggle = nav.querySelector('.nav-toggle');
-    const navList = nav.querySelector('nav ul');
-
-    navToggle.addEventListener('click', () => {
-      nav.classList.toggle('open');
-    });
-
-    navList.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        nav.classList.remove('open');
-      });
-    });
-
-    // Dropdown "Proyectos"
-    const dropdown = document.getElementById('projectsDropdown');
-    const dropdownButton = dropdown.querySelector('button');
-
-    dropdownButton.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isOpen = dropdown.classList.contains('open');
-      if (isOpen) {
-        dropdown.classList.remove('open');
-        dropdownButton.setAttribute('aria-expanded', 'false');
-      } else {
-        dropdown.classList.add('open');
-        dropdownButton.setAttribute('aria-expanded', 'true');
-      }
-    });
-
-    document.addEventListener('click', () => {
-      dropdown.classList.remove('open');
-      dropdownButton.setAttribute('aria-expanded', 'false');
-    });
-
-    dropdown.querySelector('.dropdown-menu').addEventListener('click', (e) => {
-      e.stopPropagation();
-    });
-
-    // Formulario DEMO
-    const form = document.getElementById('contactForm');
-    const statusEl = document.getElementById('formStatus');
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      statusEl.textContent = 'Gracias, tu mensaje se ha enviado (demo).';
-      form.reset();
-    });
-  </script>
+  
   <div class="retro-cursor"></div>
 <div class="cursor-instagram">@mihaelatiganas</div>
 <script src="/Cursor.js"></script>
